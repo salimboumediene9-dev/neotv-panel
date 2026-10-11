@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#070d19">
+  <title>NeoTV | لوحة بيع الاشتراكات والسيرفرات</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+<div class="app-shell">
+  <aside class="sidebar">
+    <a class="brand" href="#"><span class="brand-mark">▶</span><span><b>NeoTV</b><small>IPTV & Servers Panel</small></span></a>
+    <nav>
+      <button class="nav-item active" data-view="dashboard">⌂ <span>الرئيسية</span></button>
+      <button class="nav-item" data-view="products">▦ <span>المنتجات</span></button>
+      <button class="nav-item" data-view="servers">▤ <span>السيرفرات</span></button>
+      <button class="nav-item" data-view="iptv">▣ <span>اشتراكات IPTV</span></button>
+      <button class="nav-item" data-view="orders">▧ <span>الطلبات</span><em id="orderBadge">3</em></button>
+      <button class="nav-item" data-view="wallet">◉ <span>المحفظة</span></button>
+      <button class="nav-item" data-view="support">☏ <span>الدعم الفني</span></button>
+      <button class="nav-item" data-view="settings">⚙ <span>الإعدادات</span></button>
+    </nav>
+    <div class="support-box"><div class="support-icon">♧</div><b>نحن هنا لمساعدتك</b><p>فريق الدعم متاح لمساعدتك في الطلبات.</p><button class="outline-btn" data-view="support">تواصل معنا</button></div>
+    <div class="sidebar-foot">NeoTV © 2026<br><small>نسخة تجريبية للعرض</small></div>
+  </aside>
+
+  <main class="main">
+    <header class="topbar">
+      <label class="search">⌕ <input id="searchInput" placeholder="ابحث عن منتج، خادم، أو طلب..."></label>
+      <div class="top-actions"><button class="icon-btn" aria-label="الإشعارات">♧<i></i></button><div class="user"><span class="avatar">S</span><span><b>مدير المتجر</b><small>حساب تجريبي</small></span></div></div>
+    </header>
+
+    <section class="view active" id="dashboard">
+      <div class="hero">
+        <div class="hero-copy"><span class="eyebrow">منصتك الرقمية في مكان واحد</span><h1>مرحباً بك في <span>NeoTV</span></h1><p>إدارة سهلة لاشتراكات IPTV القانونية وخطط السيرفرات وخدمة العملاء.</p>
+          <div class="hero-pills"><span>◉ دعم العملاء</span><span>ϟ تفعيل يدوي</span><span>⬡ إدارة منظمة</span></div>
+        </div>
+        <div class="hero-art"><div class="orbit orbit-a"></div><div class="server-stack"><i></i><i></i><i></i><i></i></div><div class="glow"></div></div>
+      </div>
+
+      <div class="stats">
+        <article class="stat-card"><div class="stat-icon purple">▤</div><p>خطط السيرفرات</p><strong>12</strong><small class="positive">↑ 2 هذا الشهر</small></article>
+        <article class="stat-card"><div class="stat-icon green">▣</div><p>اشتراكات IPTV</p><strong>48</strong><small class="muted">خطط معروضة</small></article>
+        <article class="stat-card"><div class="stat-icon violet">🛒</div><p>إجمالي الطلبات</p><strong id="totalOrders">256</strong><small class="positive">↑ 12% هذا الشهر</small></article>
+        <article class="stat-card"><div class="stat-icon blue">♙</div><p>العملاء</p><strong>125</strong><small class="muted">بيانات تجريبية</small></article>
+      </div>
+
+      <div class="section-heading"><div><h2>المنتجات المتاحة</h2><p>اختر خطة للاطلاع على تفاصيلها وإرسال طلب تجريبي</p></div><button class="text-btn" data-view="products">عرض الكل ←</button></div>
+      <div class="product-grid" id="productGrid"></div>
+      <div class="notice"><span>ⓘ</span><div><b>وضع المعاينة</b><p>هذه نسخة تجريبية. لا توجد مدفوعات حقيقية أو تفعيل تلقائي أو قاعدة بيانات حتى الآن.</p></div></div>
+    </section>
+
+    <section class="view" id="products"><div class="page-heading"><div><h1>المنتجات</h1><p>خطط اشتراكات IPTV وخطط السيرفرات المتاحة</p></div><button class="primary-btn" id="addProductBtn">＋ إضافة منتج</button></div><div class="product-grid" id="allProductGrid"></div></section>
+    <section class="view" id="servers"><div class="page-heading"><div><h1>السيرفرات</h1><p>خطط VPS تجريبية يمكنك تعديلها لاحقاً</p></div></div><div class="product-grid" id="serverGrid"></div></section>
+    <section class="view" id="iptv"><div class="page-heading"><div><h1>اشتراكات IPTV</h1><p>اعرض فقط المحتوى والخدمات التي تملك حق توزيعها</p></div></div><div class="product-grid" id="iptvGrid"></div></section>
+    <section class="view" id="orders"><div class="page-heading"><div><h1>الطلبات</h1><p>طلبات تجريبية من جلسة المتصفح الحالية</p></div><span class="status-pill">تجريبي</span></div><div class="table-wrap"><table><thead><tr><th>رقم الطلب</th><th>المنتج</th><th>العميل</th><th>الحالة</th><th>السعر</th></tr></thead><tbody id="ordersBody"></tbody></table></div></section>
+    <section class="view" id="wallet"><div class="page-heading"><div><h1>المحفظة</h1><p>تصميم توضيحي فقط، لا تتم معالجة أموال</p></div></div><div class="wallet-card"><span>الرصيد التجريبي</span><strong>$12.50</strong><p>اربط بوابة دفع معتمدة بعد تجهيز الحساب التجاري وسياسة الاسترجاع.</p></div></section>
+    <section class="view" id="support"><div class="page-heading"><div><h1>الدعم الفني</h1><p>أضف وسيلة تواصل حقيقية قبل إطلاق المتجر</p></div></div><div class="simple-card"><h3>كيف يمكننا مساعدتك؟</h3><p>يمكنك لاحقاً ربط نموذج الدعم ببريدك أو بنظام تذاكر.</p><a class="primary-btn link-btn" href="mailto:support@example.com">راسل الدعم التجريبي</a></div></section>
+    <section class="view" id="settings"><div class="page-heading"><div><h1>الإعدادات</h1><p>إعدادات العرض التجريبية</p></div></div><div class="simple-card"><label class="field-label">اسم المتجر<input value="NeoTV" id="storeName"></label><label class="field-label">عملة العرض<select id="currency"><option value="USD">USD — دولار أمريكي</option><option value="DZD">DZD — دينار جزائري</option></select></label><button class="primary-btn" id="saveSettings">حفظ إعدادات العرض</button><p id="settingsMsg" class="muted"></p></div></section>
+  </main>
+</div>
+
+<div class="modal-backdrop" id="orderModal" aria-hidden="true">
+  <div class="modal"><button class="modal-close" id="closeModal">×</button><span class="eyebrow">طلب جديد</span><h2 id="modalTitle">اطلب المنتج</h2><p id="modalDescription" class="muted"></p>
+    <form id="orderForm"><input type="hidden" id="productId"><label class="field-label">الاسم الكامل<input id="customerName" required maxlength="100" placeholder="اكتب اسمك"></label><label class="field-label">البريد الإلكتروني أو وسيلة التواصل<input id="contact" required maxlength="120" placeholder="example@email.com"></label><button class="primary-btn full-btn" type="submit">إرسال طلب تجريبي</button></form><p class="tiny-note">لن يتم خصم أي مبلغ. هذا نموذج للمعاينة فقط.</p>
+  </div>
+</div>
+<div class="toast" id="toast"></div>
+<script src="/app.js"></script>
+</body>
+</html>

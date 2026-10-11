@@ -1,408 +1,250 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>NeoTV Panel</title>
-<style>
-:root {
-  --bg:#071225;
-  --panel:#101f3b;
-  --panel2:#162b4c;
-  --blue:#1688ff;
-  --cyan:#58d8ff;
-  --text:#f1f6ff;
-  --muted:#9eb2d1;
-  --border:#294061;
-}
-*{box-sizing:border-box}
-body{
-  margin:0;
-  font-family:Arial,Tahoma,sans-serif;
-  background:linear-gradient(135deg,#071225,#10274a);
-  color:var(--text);
-  min-height:100vh;
-}
-button,input,select,textarea{font:inherit}
-button{cursor:pointer}
-input,select,textarea{
-  width:100%;padding:12px;margin:7px 0;
-  background:#08162d;color:white;
-  border:1px solid var(--border);
-  border-radius:9px;
-}
-button{
-  border:0;border-radius:9px;padding:11px 15px;
-  background:var(--blue);color:white;font-weight:bold;
-}
-button.secondary{background:#243b5e}
-button.danger{background:#8d304b}
-.hidden{display:none!important}
-.login{
-  min-height:100vh;display:grid;place-items:center;padding:20px;
-}
-.login-box{
-  width:min(420px,100%);background:var(--panel);
-  padding:28px;border:1px solid var(--border);
-  border-radius:20px;box-shadow:0 20px 70px #0008;
-}
-h1{color:var(--cyan);margin-top:0}
-label{display:block;margin-top:12px;color:#c6d7f0}
-.note{font-size:12px;color:#ffd985;line-height:1.8}
-.layout{display:grid;grid-template-columns:230px 1fr;min-height:100vh}
-aside{background:#08152a;padding:20px;border-left:1px solid var(--border)}
-.logo{font-size:23px;font-weight:bold;color:var(--cyan);margin-bottom:25px}
-nav button{display:block;width:100%;text-align:right;margin:8px 0;background:transparent;color:#c6d7f0}
-nav button:hover,nav button.active{background:var(--panel2);color:white}
-main{padding:25px;min-width:0}
-header{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
-h2{margin-top:0}
-.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin:20px 0}
-.card,.stat{
-  background:var(--panel);border:1px solid var(--border);
-  padding:18px;border-radius:14px;margin-bottom:15px;
-}
-.stat small{color:var(--muted)}
-.stat strong{display:block;font-size:28px;margin-top:12px}
-.row{display:flex;gap:10px;flex-wrap:wrap}
-.row>*{flex:1}
-.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
-.movie{background:#0b1930;border:1px solid var(--border);border-radius:12px;overflow:hidden}
-.poster{padding:25px;text-align:center;font-size:38px;background:linear-gradient(135deg,#174c84,#18254a)}
-.movie-info{padding:12px}
-.muted{color:var(--muted);font-size:13px}
-table{width:100%;border-collapse:collapse;min-width:600px}
-th,td{padding:12px;text-align:right;border-bottom:1px solid var(--border);font-size:13px}
-.table-wrap{overflow-x:auto}
-.status{color:#ffe08a}
-footer{text-align:center;color:var(--muted);padding:20px;font-size:12px}
-@media(max-width:800px){
- .layout{grid-template-columns:1fr}
- aside{padding:12px}
- nav{display:grid;grid-template-columns:repeat(2,1fr);gap:5px}
- main{padding:14px}
- .cards{grid-template-columns:1fr 1fr}
- .grid{grid-template-columns:repeat(2,minmax(0,1fr))}
-}
-@media(max-width:450px){
- .grid{grid-template-columns:1fr}
- .cards{grid-template-columns:1fr}
-}
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#0a0d16">
+  <title>NEO TV PANEL</title>
+  <link rel="stylesheet" href="/style.css">
 </head>
 <body>
+  <div class="app">
+    <aside class="sidebar">
+      <div class="brand">
+        <div class="logo">N</div>
+        <div>
+          <h1>NEO TV PANEL</h1>
+          <small>SMART IPTV MANAGEMENT</small>
+        </div>
+      </div>
 
-<section id="login" class="login">
- <form class="login-box" id="loginForm">
-  <h1>▶ NeoTV Panel</h1>
-  <p>لوحة إدارة الأفلام والمسلسلات والاشتراكات</p>
-  <label for="username">اسم المستخدم</label>
-  <input id="username" required placeholder="أدخل اسم المستخدم">
-  <label for="password">كلمة المرور</label>
-  <input id="password" type="password" required placeholder="أدخل كلمة المرور">
-  <button style="width:100%;margin-top:15px">تسجيل الدخول</button>
-  <p id="loginError" class="note"></p>
-  <p class="note">تنبيه: تسجيل الدخول تجريبي فقط، ولا يوفر حماية حقيقية.</p>
- </form>
-</section>
+      <p class="nav-label">القائمة الرئيسية</p>
 
-<div id="app" class="layout hidden">
- <aside>
-  <div class="logo">▶ NeoTV Panel</div>
-  <nav>
-   <button class="active" data-page="dashboard">▦ الرئيسية</button>
-   <button data-page="movies">🎬 الأفلام والمسلسلات</button>
-   <button data-page="orders">📄 طلبات الاشتراك</button>
-   <button data-page="settings">⚙ الإعدادات</button>
-  </nav>
-  <button id="logout" class="secondary" style="width:100%;margin-top:20px">تسجيل الخروج</button>
- </aside>
+      <nav class="navs">
+        <a class="nav active" href="#dashboard" data-page="dashboard">▦ لوحة التحكم</a>
+        <a class="nav" href="#products" data-page="products">▣ المنتجات والاشتراكات</a>
+        <a class="nav" href="#servers" data-page="servers">◈ السيرفرات</a>
+        <a class="nav" href="#orders" data-page="orders">🛒 الطلبات</a>
+        <a class="nav" href="#clients" data-page="clients">♙ العملاء والموزعون</a>
+        <a class="nav" href="#wallet" data-page="wallet">◉ الأرصدة والأسعار</a>
+        <a class="nav" href="#settings" data-page="settings">⚙ الإعدادات</a>
+      </nav>
 
- <main>
-  <header>
-   <div>
-    <h2 id="pageTitle">الرئيسية</h2>
-    <p class="muted">مرحبًا بك في لوحة إدارة NeoTV</p>
-   </div>
-   <span>🔵 النظام التجريبي</span>
-  </header>
+      <div class="side-bottom">
+        <span class="online"></span> NEO TV PANEL
+        <p>لوحة إدارة المنتجات والاشتراكات الرقمية</p>
+      </div>
+    </aside>
 
-  <section id="dashboard" class="page">
-   <div class="cards">
-    <div class="stat"><small>الأفلام والمسلسلات</small><strong id="movieCount">0</strong></div>
-    <div class="stat"><small>طلبات الاشتراك</small><strong id="orderCount">0</strong></div>
-    <div class="stat"><small>قيد المراجعة</small><strong id="pendingCount">0</strong></div>
-   </div>
+    <main class="main">
+      <header class="topbar">
+        <div>
+          <div class="crumb">NEO TV / <span id="crumb">الرئيسية</span></div>
+          <h2 id="page-title">مرحبًا بك في NEO TV 👋</h2>
+        </div>
 
-   <div class="card">
-    <h3>إضافة محتوى سريع</h3>
-    <form id="movieForm">
-     <label>اسم الفيلم أو المسلسل</label>
-     <input id="movieName" required placeholder="مثال: مسلسل جديد">
-     <div class="row">
-      <select id="movieType">
-       <option value="فيلم">فيلم</option>
-       <option value="مسلسل">مسلسل</option>
-      </select>
-      <input id="movieYear" placeholder="سنة الإصدار">
-     </div>
-     <input id="movieCategory" placeholder="التصنيف: أكشن، دراما...">
-     <textarea id="movieDescription" placeholder="وصف المحتوى"></textarea>
-     <button>إضافة إلى القائمة</button>
-    </form>
-   </div>
-   <div class="card">
-    <h3>أحدث المحتويات</h3>
-    <div id="recentMovies" class="grid"></div>
-   </div>
-  </section>
+        <div class="actions">
+          <input class="search" id="search" type="search"
+                 placeholder="ابحث عن طلب أو منتج...">
+          <button class="btn" id="add-button" type="button">＋ إضافة جديدة</button>
+          <div class="avatar" title="حساب المدير">👤</div>
+        </div>
+      </header>
 
-  <section id="movies" class="page hidden">
-   <div class="card">
-    <h3>قائمة الأفلام والمسلسلات</h3>
-    <div class="row">
-     <input id="searchMovie" placeholder="ابحث عن عنوان...">
-     <select id="filterType">
-      <option value="الكل">كل الأنواع</option>
-      <option value="فيلم">أفلام</option>
-      <option value="مسلسل">مسلسلات</option>
-     </select>
-    </div>
-    <div id="movieList" class="grid"></div>
-   </div>
-  </section>
+      <section class="stats">
+        <article class="stat">
+          <div class="stat-top">
+            <span>إجمالي المبيعات</span><span class="stat-icon">💰</span>
+          </div>
+          <div class="number">248,500 <small>DZD</small></div>
+          <div class="trend">↗ المبيعات الإجمالية</div>
+        </article>
 
-  <section id="orders" class="page hidden">
-   <div class="card">
-    <h3>إدارة طلبات الاشتراك</h3>
-    <form id="orderForm">
-     <label>اسم العميل</label>
-     <input id="customerName" required placeholder="اسم العميل">
-     <label>نوع الاشتراك أو الخدمة</label>
-     <input id="serviceName" required placeholder="مثال: اشتراك شهري">
-     <label>رقم الهاتف أو وسيلة التواصل</label>
-     <input id="customerContact" required placeholder="معلومات التواصل">
-     <button>تسجيل طلب تجريبي</button>
-    </form>
-   </div>
-   <div class="card">
-    <h3>قائمة الطلبات</h3>
-    <div class="table-wrap">
-     <table>
-      <thead><tr>
-       <th>رقم الطلب</th><th>العميل</th><th>الخدمة</th>
-       <th>التواصل</th><th>الحالة</th><th>الإجراء</th>
-      </tr></thead>
-      <tbody id="orderList"></tbody>
-     </table>
-    </div>
-   </div>
-  </section>
+        <article class="stat">
+          <div class="stat-top">
+            <span>الاشتراكات النشطة</span><span class="stat-icon">📺</span>
+          </div>
+          <div class="number">1,284</div>
+          <div class="trend">اشتراكات تجريبية للعرض</div>
+        </article>
 
-  <section id="settings" class="page hidden">
-   <div class="card">
-    <h3>إعدادات NeoTV</h3>
-    <p>التصميم: أزرق داكن</p>
-    <p>اللغة: العربية</p>
-    <p>الاتجاه: من اليمين إلى اليسار</p>
-    <p class="note">هذه نسخة أولية. البيانات محفوظة في المتصفح الحالي فقط، وليست قاعدة بيانات مشتركة.</p>
-    <button id="clearData" class="danger">مسح البيانات المحلية</button>
-   </div>
-  </section>
-  <footer>NeoTV Panel · النسخة التجريبية</footer>
- </main>
-</div>
+        <article class="stat">
+          <div class="stat-top">
+            <span>الطلبات الجديدة</span><span class="stat-icon">🧾</span>
+          </div>
+          <div class="number" id="orders-count">36</div>
+          <div class="trend pending-text">تحتاج إلى المراجعة</div>
+        </article>
 
-<script>
-const $ = id => document.getElementById(id);
+        <article class="stat">
+          <div class="stat-top">
+            <span>الموزعون</span><span class="stat-icon">♙</span>
+          </div>
+          <div class="number">18</div>
+          <div class="trend">حسابات تجريبية للعرض</div>
+        </article>
+      </section>
 
-function readData(key, fallback) {
- try {
-  const value = localStorage.getItem(key);
-  return value ? JSON.parse(value) : fallback;
- } catch {
-  return fallback;
- }
-}
-function saveData() {
- localStorage.setItem("neotv_movies", JSON.stringify(movies));
- localStorage.setItem("neotv_orders", JSON.stringify(orders));
-}
+      <section class="grid-main">
+        <article class="card">
+          <div class="card-head">
+            <div>
+              <h3>نظرة عامة على المبيعات</h3>
+              <p class="sub">متابعة المبيعات خلال الأسبوع</p>
+            </div>
+            <span class="pill">هذا الأسبوع</span>
+          </div>
 
-let movies = readData("neotv_movies", [
- {id:1,name:"مثال: فيلم أكشن",type:"فيلم",year:"2025",category:"أكشن",description:"مثال تجريبي"},
- {id:2,name:"مثال: مسلسل درامي",type:"مسلسل",year:"2024",category:"دراما",description:"مثال تجريبي"}
-]);
-let orders = readData("neotv_orders", []);
+          <div class="chart">
+            <svg viewBox="0 0 600 170" preserveAspectRatio="none"
+                 role="img" aria-label="رسم توضيحي للمبيعات">
+              <defs>
+                <linearGradient id="chartFill" x1="0" x2="0" y1="0" y2="1">
+                  <stop offset="0" stop-color="#7583ff" stop-opacity=".35"/>
+                  <stop offset="1" stop-color="#7583ff" stop-opacity="0"/>
+                </linearGradient>
+              </defs>
+              <path d="M0 135 C35 128 45 94 85 110 S145 125 170 84 S230 100 255 67 S315 82 340 55 S390 82 425 40 S490 62 520 26 S570 50 600 12 L600 170 L0 170Z"
+                    fill="url(#chartFill)"/>
+              <path d="M0 135 C35 128 45 94 85 110 S145 125 170 84 S230 100 255 67 S315 82 340 55 S390 82 425 40 S490 62 520 26 S570 50 600 12"
+                    fill="none" stroke="#7d8aff" stroke-width="3"
+                    stroke-linecap="round"/>
+            </svg>
+          </div>
 
-function escapeHTML(value) {
- return String(value ?? "").replace(/[&<>"']/g, c => ({
-  "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
- }[c]));
-}
+          <div class="chart-labels">
+            <span>السبت</span><span>الأحد</span><span>الإثنين</span>
+            <span>الثلاثاء</span><span>الأربعاء</span><span>الخميس</span><span>الجمعة</span>
+          </div>
+        </article>
 
-function movieCard(m) {
- return `<article class="movie">
-  <div class="poster">${m.type==="مسلسل"?"📺":"🎬"}</div>
-  <div class="movie-info">
-   <h3>${escapeHTML(m.name)}</h3>
-   <p class="muted">${escapeHTML(m.type)} · ${escapeHTML(m.year||"")} · ${escapeHTML(m.category||"")}</p>
-   <p>${escapeHTML(m.description||"")}</p>
-   <button class="danger" data-delete-movie="${m.id}">حذف</button>
+        <article class="card">
+          <div class="card-head">
+            <div>
+              <h3>إجراءات سريعة</h3>
+              <p class="sub">الوصول إلى الأقسام الأساسية</p>
+            </div>
+          </div>
+
+          <div class="quick">
+            <button class="quick-item" data-action="اشتراك جديد">
+              <span class="qico">📺</span>
+              <strong>إضافة اشتراك</strong>
+              <small>منتج IPTV جديد</small>
+            </button>
+            <button class="quick-item" data-action="سيرفر جديد">
+              <span class="qico">🖥️</span>
+              <strong>إضافة سيرفر</strong>
+              <small>إدارة السيرفرات</small>
+            </button>
+            <button class="quick-item" data-action="موزع جديد">
+              <span class="qico">👥</span>
+              <strong>إنشاء موزع</strong>
+              <small>حساب موزع جديد</small>
+            </button>
+            <button class="quick-item" data-action="الطلبات">
+              <span class="qico">🛒</span>
+              <strong>عرض الطلبات</strong>
+              <small>متابعة الطلبات</small>
+            </button>
+          </div>
+        </article>
+      </section>
+
+      <section class="section">
+        <div class="section-title">
+          <h3 id="table-title">أحدث الطلبات</h3>
+          <button class="btn secondary" id="show-all" type="button">عرض الكل ←</button>
+        </div>
+
+        <div class="card table-wrap">
+          <table id="orders-table">
+            <thead>
+              <tr>
+                <th>رقم الطلب</th><th>المنتج</th><th>العميل</th>
+                <th>السعر</th><th>الحالة</th><th>التاريخ</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>#NT-1048</td>
+                <td><div class="product"><span class="prod-icon">📺</span>
+                  <div><strong>اشتراك IPTV — 12 شهر</strong><small>Premium 4K</small></div>
+                </div></td>
+                <td>محمد ب.</td><td>4,500 DZD</td>
+                <td><span class="status pending">قيد المراجعة</span></td><td>11 أكتوبر 2026</td>
+              </tr>
+              <tr>
+                <td>#NT-1047</td>
+                <td><div class="product"><span class="prod-icon">🖥️</span>
+                  <div><strong>سيرفر IPTV</strong><small>باقة موزع</small></div>
+                </div></td>
+                <td>متجر النور</td><td>€45.00</td>
+                <td><span class="status ok">مكتمل</span></td><td>11 أكتوبر 2026</td>
+              </tr>
+              <tr>
+                <td>#NT-1046</td>
+                <td><div class="product"><span class="prod-icon">📡</span>
+                  <div><strong>اشتراك IPTV — 3 أشهر</strong><small>Standard HD</small></div>
+                </div></td>
+                <td>أمين ك.</td><td>1,500 DZD</td>
+                <td><span class="status ok">مكتمل</span></td><td>10 أكتوبر 2026</td>
+              </tr>
+              <tr>
+                <td>#NT-1045</td>
+                <td><div class="product"><span class="prod-icon">👥</span>
+                  <div><strong>رصيد موزع</strong><small>شحن محفظة</small></div>
+                </div></td>
+                <td>Digital DZ</td><td>€20.00</td>
+                <td><span class="status pending">بانتظار الدفع</span></td><td>10 أكتوبر 2026</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="bottom-grid">
+        <article>
+          <div class="section-title"><h3>العملات والأرصدة</h3></div>
+          <div class="card">
+            <div class="currency">
+              <div><strong>الدينار الجزائري</strong><small>DZD · العملة المحلية</small></div>
+              <strong class="amount">248,500 DZD</strong>
+            </div>
+            <div class="currency">
+              <div><strong>اليورو</strong><small>EUR · العملة الثانية</small></div>
+              <strong class="amount">€1,240.00</strong>
+            </div>
+            <p class="sub">الأرقام المعروضة تجريبية وليست أرصدة حقيقية.</p>
+          </div>
+        </article>
+
+        <article>
+          <div class="section-title"><h3>حالة السيرفرات</h3></div>
+          <div class="card">
+            <div class="currency">
+              <div><strong>NEO Premium</strong><small>سيرفر تجريبي</small></div>
+              <span class="status ok">مثال: متصل</span>
+            </div>
+            <div class="currency">
+              <div><strong>NEO Europe</strong><small>سيرفر تجريبي</small></div>
+              <span class="status ok">مثال: متصل</span>
+            </div>
+            <div class="currency">
+              <div><strong>NEO Backup</strong><small>سيرفر تجريبي</small></div>
+              <span class="status pending">غير مربوط</span>
+            </div>
+          </div>
+        </article>
+      </section>
+
+      <footer class="footer">
+        NEO TV PANEL · واجهة أولية — البيانات المعروضة للتجربة فقط.
+      </footer>
+    </main>
   </div>
- </article>`;
-}
 
-function renderMovies() {
- const q = $("searchMovie").value.trim().toLowerCase();
- const type = $("filterType").value;
- const filtered = movies.filter(m =>
-  (type==="الكل" || m.type===type) &&
-  (m.name.toLowerCase().includes(q) ||
-   (m.category||"").toLowerCase().includes(q))
- );
- $("movieList").innerHTML = filtered.map(movieCard).join("") ||
-  '<p class="muted">لا توجد نتائج.</p>';
- $("recentMovies").innerHTML = movies.slice(-3).reverse().map(movieCard).join("") ||
-  '<p class="muted">لا يوجد محتوى بعد.</p>';
- $("movieCount").textContent = movies.length;
-}
-
-function renderOrders() {
- $("orderList").innerHTML = orders.map(o => `
- <tr>
-  <td>${escapeHTML(o.id)}</td>
-  <td>${escapeHTML(o.customer)}</td>
-  <td>${escapeHTML(o.service)}</td>
-  <td>${escapeHTML(o.contact)}</td>
-  <td class="status">${o.status==="pending"?"قيد المراجعة"😮.status==="approved"?"مقبول":"مرفوض"}</td>
-  <td>
-   <select data-status="${o.id}" aria-label="حالة الطلب">
-    <option value="pending" ${o.status==="pending"?"selected":""}>قيد المراجعة</option>
-    <option value="approved" ${o.status==="approved"?"selected":""}>مقبول</option>
-    <option value="rejected" ${o.status==="rejected"?"selected":""}>مرفوض</option>
-   </select>
-   <button class="danger" data-delete-order="${o.id}">حذف</button>
-  </td>
- </tr>`).join("") || '<tr><td colspan="6">لا توجد طلبات بعد.</td></tr>';
-
- $("orderCount").textContent = orders.length;
- $("pendingCount").textContent = orders.filter(o=>o.status==="pending").length;
-}
-
-function renderAll() {
- renderMovies();
- renderOrders();
-}
-
-function showPage(page) {
- document.querySelectorAll(".page").forEach(el =>
-  el.classList.toggle("hidden", el.id!==page)
- );
- document.querySelectorAll("[data-page]").forEach(btn =>
-  btn.classList.toggle("active",btn.dataset.page===page)
- );
- const titles = {
-  dashboard:"الرئيسية",
-  movies:"الأفلام والمسلسلات",
-  orders:"طلبات الاشتراك",
-  settings:"الإعدادات"
- };
- $("pageTitle").textContent = titles[page];
-}
-
-$("loginForm").addEventListener("submit", e => {
- e.preventDefault();
- // دخول تجريبي فقط، وليس مصادقة آمنة.
- if ($("username").value.trim() && $("password").value) {
-  $("loginError").textContent = "";
-  $("login").classList.add("hidden");
-  $("app").classList.remove("hidden");
-  renderAll();
- } else {
-  $("loginError").textContent = "أدخل بيانات الدخول.";
- }
-});
-
-function logout() {
- $("app").classList.add("hidden");
- $("login").classList.remove("hidden");
- $("password").value = "";
-}
-$("logout").addEventListener("click",logout);
-
-document.querySelectorAll("[data-page]").forEach(btn => {
- btn.addEventListener("click",()=>showPage(btn.dataset.page));
-});
-
-$("movieForm").addEventListener("submit",e=>{
- e.preventDefault();
- movies.push({
-  id:Date.now(),
-  name:$("movieName").value.trim(),
-  type:$("movieType").value,
-  year:$("movieYear").value.trim(),
-  category:$("movieCategory").value.trim(),
-  description:$("movieDescription").value.trim()
- });
- saveData();
- $("movieForm").reset();
- renderAll();
-});
-
-document.addEventListener("click",e=>{
- const delMovie=e.target.closest("[data-delete-movie]");
- if(delMovie){
-  movies=movies.filter(m=>String(m.id)!==delMovie.dataset.deleteMovie);
-  saveData();
-  renderAll();
- }
- const delOrder=e.target.closest("[data-delete-order]");
- if(delOrder){
-  orders=orders.filter(o=>String(o.id)!==delOrder.dataset.deleteOrder);
-  saveData();
-  renderOrders();
- }
-});
-
-$("searchMovie").addEventListener("input",renderMovies);
-$("filterType").addEventListener("change",renderMovies);
-
-$("orderForm").addEventListener("submit",e=>{
- e.preventDefault();
- orders.push({
-  id:Date.now(),
-  customer:$("customerName").value.trim(),
-  service:$("serviceName").value.trim(),
-  contact:$("customerContact").value.trim(),
-  status:"pending"
- });
- saveData();
- $("orderForm").reset();
- renderOrders();
-});
-
-$("orderList").addEventListener("change",e=>{
- const id=e.target.dataset.status;
- if(!id) return;
- const order=orders.find(o=>String(o.id)===id);
- if(order){
-  order.status=e.target.value;
-  saveData();
-  renderOrders();
- }
-});
-
-$("clearData").addEventListener("click",()=>{
- if(confirm("هل تريد حذف جميع البيانات المحلية؟")){
-  movies=[];
-  orders=[];
-  saveData();
-  renderAll();
- }
-});
-
-renderAll();
-</script>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <script src="/app.js" defer></script>
 </body>
 </html>
